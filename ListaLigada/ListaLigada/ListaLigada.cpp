@@ -117,25 +117,33 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
-	NO* novo = (NO*)malloc(sizeof(NO));
-	if (novo == NULL)
-	{
+	int valor;
+	cout << "Digite o elemento: ";
+	cin >> valor;
+
+	// Verifica se o valor já existe na lista
+	NO* aux = posicaoElemento(valor);
+	if (aux != NULL) {
+		cout << "Elemento ja existe na lista. Insercao cancelada." << endl;
 		return;
 	}
 
-	cout << "Digite o elemento: ";
-	cin >> novo->valor;
+	// Aloca memória dinamicamente para o novo elemento
+	NO* novo = (NO*)malloc(sizeof(NO));
+	if (novo == NULL) {
+		cout << "Erro de alocacao de memoria." << endl;
+		return;
+	}
+
+	novo->valor = valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
+	if (primeiro == NULL) {
 		primeiro = novo;
 	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
+	else {
+		// Procura o final da lista
+		aux = primeiro;
 		while (aux->prox != NULL) {
 			aux = aux->prox;
 		}
@@ -143,14 +151,53 @@ void inserirElemento()
 	}
 }
 
+
 void excluirElemento()
 {
-	
+	int numero;
+	cout << "Digite o numero a ser excluido: ";
+	cin >> numero;
+
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
+	// Percorre a lista para encontrar o elemento
+	while (atual != NULL) {
+		if (atual->valor == numero) {
+			if (anterior == NULL) {
+				// Se o elemento a ser excluído é o primeiro da lista
+				primeiro = atual->prox;
+			}
+			else {
+				// Se o elemento a ser excluído está no meio ou no final da lista
+				anterior->prox = atual->prox;
+			}
+			free(atual); // Libera a memória do nó excluído
+			cout << "ELEMENTO EXCLUIDO" << endl;
+			return;
+		}
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	// Se o elemento não foi encontrado
+	cout << "ELEMENTO NAO ENCONTRADO" << endl;
 }
+
 
 void buscarElemento()
 {
-	
+	int numero;
+	cout << "Digite o numero a ser buscado: ";
+	cin >> numero;
+
+	NO* resultado = posicaoElemento(numero);
+	if (resultado != NULL) {
+		cout << "ENCONTRADO" << endl;
+	}
+	else {
+		cout << "ELEMENTO NAO ENCONTRADO" << endl;
+	}
 }
 
 
